@@ -1,0 +1,17 @@
+{
+  "name": "wimexplorer",
+  "version": "1.0.0",
+  "description": "WimExplorer - Editor visual de archivos .wim usando wimlib-imagex + 7-Zip",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "7zip-bin": "^5.2.0",
+    "express": "^4.21.0",
+    "fast-xml-parser": "^4.5.5",
+    "multer": "^1.4.5-lts.1",
+    "open": "^10.1.0",
+    "systray2": "^2.1.2"
+  }
+}
