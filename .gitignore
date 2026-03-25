@@ -24,3 +24,15 @@ pnpm-debug.log*
 .idea/
 .DS_Store
 Thumbs.db
+
+# Local packaging helper
+crear-release-zip.bat
+
+# Temp build files
+launcher_temp.cs
+
+# Developer-only docs (not for distribution)
+docs/
+
+# Zip versions
+WimExplorer-v*.zip

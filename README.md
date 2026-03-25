@@ -10,6 +10,7 @@
 </p>
 
 <p align="center">
+  <img src="https://img.shields.io/badge/Version-1.1-0f172a?style=for-the-badge" alt="v1.1">
   <img src="https://img.shields.io/badge/Windows-7%20%7C%2010%20%7C%2011-0f172a?style=for-the-badge&logo=windows&logoColor=white" alt="Windows">
   <img src="https://img.shields.io/badge/Node.js-18%2B-166534?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js 18+">
   <img src="https://img.shields.io/badge/wimlib-integrado-1d4ed8?style=for-the-badge" alt="wimlib">
@@ -32,6 +33,7 @@ Si alguna vez abrir, inspeccionar o modificar una imagen WIM te resulto tedioso,
 | Operaciones comunes en un clic | Extraer, agregar, reemplazar y eliminar sin escribir comandos |
 | Pensado para trabajo real | Deteccion de conflictos, logs en vivo, selector de imagen y bandeja del sistema |
 | Motor confiable | Todas las operaciones pasan por `wimlib-imagex`, manteniendo compatibilidad con el formato |
+| Launcher inteligente | Verifica requisitos automaticamente antes de iniciar la aplicacion |
 
 ## Caracteristicas principales
 
@@ -51,17 +53,44 @@ Si alguna vez abrir, inspeccionar o modificar una imagen WIM te resulto tedioso,
 
 ## Inicio rapido
 
-1. Ejecuta `WimExplorer.exe`.
-2. La aplicacion iniciara el servidor local y abrira `http://localhost:3000`.
-3. Selecciona tu archivo `.wim`, `.esd` o `.swm`.
-4. Empieza a navegar y editar desde la interfaz.
+1. Ejecuta `WimExplorer-v1.1.exe`.
+2. El launcher verificara automaticamente los requisitos del sistema.
+3. La aplicacion iniciara el servidor local y abrira `http://localhost:3000`.
+4. Selecciona tu archivo `.wim`, `.esd` o `.swm`.
+5. Empieza a navegar y editar desde la interfaz.
 
-> `WimExplorer.exe` actua como lanzador. Internamente inicia `node server.js`, por lo que necesitas `Node.js` instalado en el sistema.
+## Launcher inteligente (v1.1)
+
+`WimExplorer-v1.1.exe` es el unico punto de entrada para el usuario. Al ejecutarlo realiza estas verificaciones antes de iniciar:
+
+### 1. Verificacion de Node.js
+
+Si Node.js no esta instalado, el launcher muestra un dialogo con tres opciones:
+
+| Opcion | Accion |
+|---|---|
+| Si | Instalacion automatica via `winget` (solicita permisos de administrador) |
+| No | Abre `https://nodejs.org` para instalacion manual |
+| Cancelar | Sale sin hacer nada |
+
+Tras la instalacion automatica, el launcher re-verifica que Node quedo disponible antes de continuar.
+
+### 2. Instalacion de dependencias
+
+Si la carpeta `node_modules` no existe (primera ejecucion tras descomprimir el release), el launcher pregunta al usuario y ejecuta `npm install` automaticamente en la ruta correcta.
+
+### 3. Inicio de la aplicacion
+
+Con todos los requisitos cumplidos, lanza `node server.js` en segundo plano sin mostrar consola.
+
+> El launcher resuelve todas las rutas en tiempo de ejecucion a partir de su propia ubicacion. La carpeta completa puede moverse a cualquier equipo o ruta sin que deje de funcionar.
 
 ## Flujo de uso recomendado
 
 ```text
-Abrir WimExplorer.exe
+Ejecutar WimExplorer-v1.1.exe
+-> Launcher verifica Node.js (instala si falta)
+-> Launcher verifica node_modules (instala si faltan)
 -> Cargar archivo WIM/ESD/SWM
 -> Elegir imagen interna si aplica
 -> Explorar carpetas y archivos
@@ -73,7 +102,7 @@ Abrir WimExplorer.exe
 ## Requisitos
 
 - Windows 7, 10 u 11
-- Node.js 18 o superior
+- Node.js 18 o superior *(el launcher puede instalarlo automaticamente)*
 - 7-Zip instalado
 
 ### Nota sobre 7-Zip
@@ -130,7 +159,7 @@ Nota importante:
 
 ```text
 WimExplorer/
-|-- WimExplorer.exe          # Lanzador principal
+|-- WimExplorer-v1.1.exe     # Launcher principal (unica entrada para el usuario)
 |-- README.md
 |-- LICENSES/
 |   |-- wimlib-COPYING.txt
@@ -141,20 +170,22 @@ WimExplorer/
 |   `-- libwim-15.dll
 `-- recursos/
     |-- server.js            # Backend Express
-    |-- start.bat
-    |-- start.vbs
+    |-- start.vbs            # Fuente del launcher (compilada en el .exe)
+    |-- start.bat            # Inicio alternativo para desarrollo
     |-- package.json
+    |-- logo_wme.ico         # Icono del launcher
+    |-- logo_wme.png
     |-- public/              # Interfaz web
     |   |-- index.html
     |   |-- app.js
     |   `-- styles.css
-    `-- logo_wme.png
+    `-- node_modules/        # Instalado automaticamente por el launcher
 ```
 
 ## Notas importantes
 
 - La aplicacion trabaja sobre el formato real usando `wimlib-imagex`; no inventa un formato intermedio.
-- La carpeta puede moverse de lugar, pero el equipo donde se ejecute debe cumplir con los requisitos.
+- La carpeta puede moverse de lugar. El launcher resuelve todas las rutas en tiempo de ejecucion.
 - El proyecto esta orientado a Windows y a un uso local en `localhost:3000`.
 - Si redistribuyes la aplicacion con `wimlib`, incluye tambien la carpeta `LICENSES/` y conserva la atribucion correspondiente.
 
@@ -168,6 +199,6 @@ WimExplorer/
 ---
 
 <p align="center">
-  <strong>WimExplorer</strong><br>
+  <strong>WimExplorer v1.1</strong><br>
   Edicion visual de imagenes WIM con una experiencia mas clara, rapida y amigable.
 </p>
