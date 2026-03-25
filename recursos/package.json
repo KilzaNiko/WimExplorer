@@ -1,6 +1,6 @@
-{
+﻿{
   "name": "wimexplorer",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "WimExplorer - Editor visual de archivos .wim usando wimlib-imagex + 7-Zip",
   "main": "server.js",
   "scripts": {

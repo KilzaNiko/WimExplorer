@@ -36,3 +36,6 @@ docs/
 
 # Zip versions
 WimExplorer-v*.zip
+
+# CHANGELOG solo para el dev
+CHANGELOG.md

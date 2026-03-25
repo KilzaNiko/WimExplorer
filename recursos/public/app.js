@@ -441,8 +441,17 @@ function renderTreeNode(node, parent, depth) {
     const childEl = item.nextElementSibling;
     if (hasKids && childEl?.classList.contains('tree-children')) {
       const collapsed = childEl.classList.contains('collapsed');
-      if (collapsed) { childEl.classList.remove('collapsed'); childEl.style.maxHeight = childEl.scrollHeight + 'px'; toggle.classList.add('expanded'); }
-      else { childEl.classList.add('collapsed'); childEl.style.maxHeight = '0px'; toggle.classList.remove('expanded'); }
+      if (collapsed) {
+        childEl.classList.remove('collapsed');
+        childEl.style.maxHeight = 'none';
+        toggle.classList.add('expanded');
+      } else {
+        childEl.style.maxHeight = childEl.scrollHeight + 'px';
+        childEl.offsetHeight; // force reflow so transition has a start value
+        childEl.classList.add('collapsed');
+        childEl.style.maxHeight = '0px';
+        toggle.classList.remove('expanded');
+      }
     }
     navigateTo(node.path);
   });
@@ -451,7 +460,7 @@ function renderTreeNode(node, parent, depth) {
     const cont = document.createElement('div');
     cont.className = 'tree-children';
     if (depth >= 1) { cont.style.maxHeight = '0px'; cont.classList.add('collapsed'); }
-    if (depth < 3) dirs.forEach(c => renderTreeNode(c, cont, depth + 1));
+    dirs.forEach(c => renderTreeNode(c, cont, depth + 1));
     parent.appendChild(cont);
   }
 }

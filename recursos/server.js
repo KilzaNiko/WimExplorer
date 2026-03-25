@@ -471,6 +471,9 @@ function parse7zSlt(output, imageIndex, imageCount) {
         const idx = parseInt(prefixMatch[1], 10);
         if (idx !== imageIndex) continue;
         entryPath = entryPath.substring(prefixMatch[0].length);
+      } else if (/^\[?\d+\]?$/.test(entryPath)) {
+        // Path is just an image number (e.g. "1", "2") — skip image root entries
+        continue;
       }
     }
 
