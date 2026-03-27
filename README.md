@@ -1,10 +1,8 @@
 🌐 **English** | **[Español](README.es.md)**
 
-<<<<<<< ours
 🌐 Click to expand: `English` or `Español`
-=======
+
 # WimExplorer
->>>>>>> theirs
 
 <p align="center">
   <img src="recursos/logo_wme.png" alt="WimExplorer Logo" width="110">
@@ -25,14 +23,10 @@
 
 ---
 
-<<<<<<< ours
 <details open>
 <summary><strong>English</strong> (default)</summary>
 
 ### What is WimExplorer
-=======
-## What is WimExplorer
->>>>>>> theirs
 
 WimExplorer is a visual interface for working with `.wim`, `.esd` and `.swm` images using `wimlib-imagex` as a backend engine. The idea is simple: make editing these file types fast, clear and comfortable, even if you don't want to remember commands, parameters or manual workflows.
 
@@ -215,7 +209,6 @@ WimExplorer/
 ---
 </details>
 
-<<<<<<< ours
 <details>
 <summary><strong>Español</strong></summary>
 
@@ -400,10 +393,3 @@ WimExplorer/
 
 ---
 </details>
-
-=======
->>>>>>> theirs
-<p align="center">
-  <strong>WimExplorer v1.3</strong><br>
-  Visual WIM image editing with a clearer, faster and friendlier experience.
-</p>
