@@ -1,6 +1,6 @@
 # WimExplorer
 
-🌐 Language: [English](#english) | [Español](#espanol)
+🌐 Click to expand: `English` or `Español`
 
 <p align="center">
   <img src="recursos/logo_wme.png" alt="WimExplorer Logo" width="110">
@@ -23,11 +23,8 @@
 
 ---
 
-<a id="english"></a>
-
-## English
-
-Jump to: [Español](#espanol)
+<details open>
+<summary><strong>English</strong> (default)</summary>
 
 ### What is WimExplorer
 
@@ -209,12 +206,10 @@ WimExplorer/
 - working more comfortably with multi-index images
 
 ---
+</details>
 
-<a id="espanol"></a>
-
-## Español
-
-Ir a: [English](#english)
+<details>
+<summary><strong>Español</strong></summary>
 
 ### Qué es WimExplorer
 
@@ -396,6 +391,7 @@ WimExplorer/
 - trabajar más cómodo con imágenes multiíndice
 
 ---
+</details>
 
 <p align="center">
   <strong>WimExplorer v1.3</strong><br>
