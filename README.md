@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.2-0f172a?style=for-the-badge" alt="v1.2">
+  <img src="https://img.shields.io/badge/Version-1.3-0f172a?style=for-the-badge" alt="v1.3">
   <img src="https://img.shields.io/badge/Windows-7%20%7C%2010%20%7C%2011-0f172a?style=for-the-badge&logo=windows&logoColor=white" alt="Windows">
   <img src="https://img.shields.io/badge/Node.js-18%2B-166534?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js 18+">
   <img src="https://img.shields.io/badge/wimlib-bundled-1d4ed8?style=for-the-badge" alt="wimlib">
@@ -55,15 +55,15 @@ If you've ever found opening, inspecting or modifying a WIM image tedious, this 
 
 ## Quick start
 
-1. Run `WimExplorer-v1.2.exe`.
+1. Run `WimExplorer-v1.3.exe`.
 2. The launcher will automatically verify system requirements.
 3. The application will start the local server and open `http://localhost:3000`.
 4. Select your `.wim`, `.esd` or `.swm` file.
 5. Start browsing and editing from the interface.
 
-## Smart Launcher (v1.2)
+## Smart Launcher (v1.3)
 
-`WimExplorer-v1.2.exe` is the only entry point for the user. When run, it performs these checks before starting:
+`WimExplorer-v1.3.exe` is the only entry point for the user. When run, it performs these checks before starting:
 
 ### 1. Node.js check
 
@@ -90,7 +90,7 @@ With all requirements met, it launches `node server.js` in the background withou
 ## Recommended workflow
 
 ```text
-Run WimExplorer-v1.2.exe
+Run WimExplorer-v1.3.exe
 -> Launcher checks Node.js (installs if missing)
 -> Launcher checks node_modules (installs if missing)
 -> Load WIM/ESD/SWM file
@@ -162,7 +162,7 @@ Important note:
 
 ```text
 WimExplorer/
-|-- WimExplorer-v1.2.exe     # Main launcher (only entry point for the user)
+|-- WimExplorer-v1.3.exe     # Main launcher (only entry point for the user)
 |-- README.md                # English documentation
 |-- README.es.md             # Spanish documentation
 |-- LICENSES/
@@ -204,6 +204,6 @@ WimExplorer/
 ---
 
 <p align="center">
-  <strong>WimExplorer v1.2</strong><br>
+  <strong>WimExplorer v1.3</strong><br>
   Visual WIM image editing with a clearer, faster and friendlier experience.
 </p>

@@ -8,7 +8,7 @@ const I18N = {
     // ─── Header ────────────────────────────────────────────────────
     'header.placeholder': 'Path to .wim file',
     'header.browse': '📁',
-    'header.open': '📂 Open',
+    'header.open': 'Open',
     'header.imageLabel': 'Image:',
     'header.themeTitle': 'Switch theme',
     'header.langTitle': 'Switch language',
@@ -176,7 +176,7 @@ const I18N = {
     // ─── Header ────────────────────────────────────────────────────
     'header.placeholder': 'Ruta al archivo .wim',
     'header.browse': '📁',
-    'header.open': '📂 Abrir',
+    'header.open': 'Abrir',
     'header.imageLabel': 'Imagen:',
     'header.themeTitle': 'Cambiar tema',
     'header.langTitle': 'Cambiar idioma',

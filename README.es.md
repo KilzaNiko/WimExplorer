@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.1-0f172a?style=for-the-badge" alt="v1.1">
+  <img src="https://img.shields.io/badge/Version-1.3-0f172a?style=for-the-badge" alt="v1.3">
   <img src="https://img.shields.io/badge/Windows-7%20%7C%2010%20%7C%2011-0f172a?style=for-the-badge&logo=windows&logoColor=white" alt="Windows">
   <img src="https://img.shields.io/badge/Node.js-18%2B-166534?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js 18+">
   <img src="https://img.shields.io/badge/wimlib-integrado-1d4ed8?style=for-the-badge" alt="wimlib">
@@ -55,15 +55,15 @@ Si alguna vez abrir, inspeccionar o modificar una imagen WIM te resulto tedioso,
 
 ## Inicio rapido
 
-1. Ejecuta `WimExplorer-v1.1.exe`.
+1. Ejecuta `WimExplorer-v1.3.exe`.
 2. El launcher verificara automaticamente los requisitos del sistema.
 3. La aplicacion iniciara el servidor local y abrira `http://localhost:3000`.
 4. Selecciona tu archivo `.wim`, `.esd` o `.swm`.
 5. Empieza a navegar y editar desde la interfaz.
 
-## Launcher inteligente (v1.1)
+## Launcher inteligente (v1.3)
 
-`WimExplorer-v1.1.exe` es el unico punto de entrada para el usuario. Al ejecutarlo realiza estas verificaciones antes de iniciar:
+`WimExplorer-v1.3.exe` es el unico punto de entrada para el usuario. Al ejecutarlo realiza estas verificaciones antes de iniciar:
 
 ### 1. Verificacion de Node.js
 
@@ -90,7 +90,7 @@ Con todos los requisitos cumplidos, lanza `node server.js` en segundo plano sin 
 ## Flujo de uso recomendado
 
 ```text
-Ejecutar WimExplorer-v1.1.exe
+Ejecutar WimExplorer-v1.3.exe
 -> Launcher verifica Node.js (instala si falta)
 -> Launcher verifica node_modules (instala si faltan)
 -> Cargar archivo WIM/ESD/SWM
@@ -161,7 +161,7 @@ Nota importante:
 
 ```text
 WimExplorer/
-|-- WimExplorer-v1.1.exe     # Launcher principal (unica entrada para el usuario)
+|-- WimExplorer-v1.3.exe     # Launcher principal (unica entrada para el usuario)
 |-- README.md
 |-- LICENSES/
 |   |-- wimlib-COPYING.txt
@@ -201,6 +201,6 @@ WimExplorer/
 ---
 
 <p align="center">
-  <strong>WimExplorer v1.1</strong><br>
+  <strong>WimExplorer v1.3</strong><br>
   Edicion visual de imagenes WIM con una experiencia mas clara, rapida y amigable.
 </p>
