@@ -1,7 +1,5 @@
 🌐 **English** | **[Español](README.es.md)**
 
-🌐 Click to expand: `English` or `Español`
-
 # WimExplorer
 
 <p align="center">
