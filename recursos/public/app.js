@@ -125,7 +125,7 @@ function toggleConsole(forceOpen, tab) {
 function copyConsoleLogs() {
   const lines = [];
   els.consoleBody.querySelectorAll('.log-entry').forEach(el => lines.push(el.textContent));
-  navigator.clipboard.writeText(lines.join('\n')).then(() => setStatus('📋 Log copiado al portapapeles', 'success')).catch(() => setStatus('❌ Error al copiar', 'error'));
+  navigator.clipboard.writeText(lines.join('\n')).then(() => setStatus(t('status.logCopied'), 'success')).catch(() => setStatus(t('status.copyError'), 'error'));
 }
 async function loadLogHistory() { try { const logs = await api('/api/logs/history'); logs.forEach(appendConsoleEntry); } catch(e) {} }
 
@@ -136,7 +136,7 @@ let terminalWelcomed = false;
 function terminalWelcome() {
   if (terminalWelcomed) return;
   terminalWelcomed = true;
-  terminalLines.push({ cls: 't-welcome', html: 'Si desea ver los comandos de wimlib, escriba -help' });
+  terminalLines.push({ cls: 't-welcome', html: t('terminal.welcome') });
   renderTerminal();
 }
 
@@ -155,7 +155,7 @@ function renderTerminal() {
 
 function copyTerminalText() {
   const text = terminalLines.map(l => { const d = document.createElement('div'); d.innerHTML = l.html; return d.textContent; }).join('\n');
-  navigator.clipboard.writeText(text).then(() => setStatus('📋 Terminal copiado al portapapeles', 'success')).catch(() => setStatus('❌ Error al copiar', 'error'));
+  navigator.clipboard.writeText(text).then(() => setStatus(t('status.terminalCopied'), 'success')).catch(() => setStatus(t('status.copyError'), 'error'));
 }
 
 async function runTerminalCommand(rawArgs) {
@@ -176,8 +176,8 @@ async function runTerminalCommand(rawArgs) {
     const newLines = [];
     if (data.stdout?.trim()) data.stdout.split('\n').forEach(l => newLines.push({ cls: 't-stdout', html: escapeHtml(l) }));
     if (data.stderr?.trim()) data.stderr.split('\n').forEach(l => newLines.push({ cls: 't-stderr', html: escapeHtml(l) }));
-    if (!data.stdout?.trim() && !data.stderr?.trim()) newLines.push({ cls: 't-stdout', html: '(sin salida)' });
-    if (data.exitCode !== 0) newLines.push({ cls: 't-error', html: `Código de salida: ${data.exitCode}` });
+    if (!data.stdout?.trim() && !data.stderr?.trim()) newLines.push({ cls: 't-stdout', html: t('terminal.noOutput') });
+    if (data.exitCode !== 0) newLines.push({ cls: 't-error', html: `${t('terminal.exitCode')} ${data.exitCode}` });
     newLines.forEach(l => terminalLines.push(l));
     while (terminalLines.length > 1000) terminalLines.shift();
     renderTerminal();
@@ -196,11 +196,12 @@ async function check7zStatus() {
   try {
     const data = await api('/api/7z-test', { method: 'POST' });
     if (data.available) { els.sevenZipDot.className = 'status-dot ok'; els.btn7zStatus.title = `7-Zip OK: ${data.path}`; setStatus(`✅ 7-Zip: ${data.version || data.path}`, 'success'); }
-    else { els.sevenZipDot.className = 'status-dot fail'; els.btn7zStatus.title = `7-Zip: ${data.error || 'No disponible'}`; setStatus(`⚠️ 7z: ${data.error || 'No disponible'}`, 'error'); }
+
+    else { els.sevenZipDot.className = 'status-dot fail'; els.btn7zStatus.title = `7-Zip: ${data.error || t('status.7zNotAvailable')}`; setStatus(`⚠️ 7z: ${data.error || t('status.7zNotAvailable')}`, 'error'); }
   } catch(e) { els.sevenZipDot.className = 'status-dot fail'; }
 }
 async function init7zStatus() {
-  try { const data = await api('/api/7z-status'); els.sevenZipDot.className = data.available ? 'status-dot ok' : 'status-dot fail'; els.btn7zStatus.title = data.available ? `7-Zip OK: ${data.path}` : (data.error || 'No disponible'); } catch(e) { els.sevenZipDot.className = 'status-dot fail'; }
+  try { const data = await api('/api/7z-status'); els.sevenZipDot.className = data.available ? 'status-dot ok' : 'status-dot fail'; els.btn7zStatus.title = data.available ? `7-Zip OK: ${data.path}` : (data.error || t('status.7zNotAvailable')); } catch(e) { els.sevenZipDot.className = 'status-dot fail'; }
 }
 
 // ─── wimlib version ───────────────────────────────────────────────
@@ -240,13 +241,13 @@ function hide7zError() { els.sevenZipError.style.display = 'none'; }
 async function install7zViaWinget() {
   hide7zError();
   els.sevenZipProgress.style.display = 'block';
-  els.sevenZipProgressLabel.textContent = 'Instalando 7-Zip via winget...';
+  els.sevenZipProgressLabel.textContent = t('status.installingWinget');
   els.btn7zInstallWinget.disabled = true;
   els.btn7zBrowsePath.disabled = true;
   try {
     const data = await api('/api/7z-install', { method: 'POST' });
     if (data.available) {
-      els.sevenZipProgressLabel.textContent = '✅ 7-Zip instalado correctamente';
+      els.sevenZipProgressLabel.textContent = t('modal.7z.installed');
       els.sevenZipProgressFill.style.animation = 'none';
       els.sevenZipProgressFill.style.width = '100%';
       els.sevenZipDot.className = 'status-dot ok';
@@ -270,14 +271,14 @@ async function browse7zPath() {
     const folderData = await api('/api/pick-folder');
     if (!folderData.path) return;
     els.sevenZipProgress.style.display = 'block';
-    els.sevenZipProgressLabel.textContent = `Verificando ${folderData.path}...`;
+    els.sevenZipProgressLabel.textContent = t('status.verifying', folderData.path);
     const data = await api('/api/7z-set-path', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ dirPath: folderData.path })
     });
     if (data.available) {
-      els.sevenZipProgressLabel.textContent = `✅ 7-Zip encontrado: ${data.path}`;
+      els.sevenZipProgressLabel.textContent = t('status.7zFound', data.path);
       els.sevenZipProgressFill.style.animation = 'none';
       els.sevenZipProgressFill.style.width = '100%';
       els.sevenZipDot.className = 'status-dot ok';
@@ -298,16 +299,16 @@ async function exit7zModal() {
 
 // ─── File Picker ──────────────────────────────────────────────────
 async function pickFile() {
-  setStatus('Abriendo explorador de archivos...', 'info');
-  try { const data = await api('/api/pick-file'); if (data.path) { els.wimPathInput.value = data.path; setStatus('Archivo seleccionado', 'success'); } else setStatus('Selección cancelada', 'info'); }
+  setStatus(t('status.openingExplorer'), 'info');
+  try { const data = await api('/api/pick-file'); if (data.path) { els.wimPathInput.value = data.path; setStatus(t('status.fileSelected'), 'success'); } else setStatus(t('status.selectionCancelled'), 'info'); }
   catch(e) { setStatus(`Error: ${e.message}`, 'error'); }
 }
 
 // ─── Open WIM ─────────────────────────────────────────────────────
 async function openWim() {
   const wimPath = els.wimPathInput.value.trim();
-  if (!wimPath) { setStatus('⚠️ Ingresa la ruta al archivo .wim', 'error'); return; }
-  showLoading('Abriendo archivo WIM...');
+  if (!wimPath) { setStatus(t('status.enterPath'), 'error'); return; }
+  showLoading(t('status.openingWim'));
   try {
     const data = await api('/api/open', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ wimPath }) });
     state.wimPath = wimPath;
@@ -316,7 +317,7 @@ async function openWim() {
     state.images.forEach(img => {
       const opt = document.createElement('option');
       opt.value = img.index;
-      opt.textContent = `${img.index} — ${img.name || 'Sin nombre'}${img.fileCount ? ` (${img.fileCount.toLocaleString()} archivos)` : ''}`;
+      opt.textContent = `${img.index} — ${img.name || t('status.noName')}${img.fileCount ? ` (${img.fileCount.toLocaleString()} ${t('status.files')})` : ''}`;
       els.imageSelect.appendChild(opt);
     });
     els.imageSelectorContainer.style.display = state.images.length > 1 ? 'flex' : 'none';
@@ -328,7 +329,7 @@ async function openWim() {
     } else {
       // Single image: load directly
       state.imageIndex = state.images.length > 0 ? state.images[0].index : 1;
-      setStatus(`✅ Abierto: ${state.images.length} imagen(es)`, 'success');
+      setStatus(`✅ ${t('status.opened', state.images.length)}`, 'success');
       await browseWim();
     }
   } catch(e) { setStatus(`❌ ${e.message}`, 'error'); hideLoading(); }
@@ -341,12 +342,12 @@ function showImageSelectModal() {
     const card = document.createElement('div');
     card.className = 'image-select-card';
     const stats = [];
-    if (img.fileCount) stats.push(`${img.fileCount.toLocaleString()} archivos`);
-    if (img.dirCount) stats.push(`${img.dirCount.toLocaleString()} carpetas`);
+    if (img.fileCount) stats.push(`${img.fileCount.toLocaleString()} ${t('status.files')}`);
+    if (img.dirCount) stats.push(`${img.dirCount.toLocaleString()} ${t('status.folders')}`);
     card.innerHTML = `
       <span class="img-idx">${img.index}</span>
       <div class="img-info">
-        <div class="img-name">${escapeHtml(img.name || 'Sin nombre')}</div>
+        <div class="img-name">${escapeHtml(img.name || t('status.noName'))}</div>
         ${img.description ? `<div class="img-desc">${escapeHtml(img.description)}</div>` : ''}
         ${stats.length ? `<div class="img-stats">${stats.join(' • ')}</div>` : ''}
       </div>`;
@@ -354,7 +355,7 @@ function showImageSelectModal() {
       state.imageIndex = img.index;
       els.imageSelect.value = img.index;
       hideModal('modalImageSelect');
-      setStatus(`✅ Imagen ${img.index} seleccionada`, 'success');
+      setStatus(`✅ ${t('status.imageSelected', img.index)}`, 'success');
       browseWim();
     });
     els.imageSelectList.appendChild(card);
@@ -366,7 +367,7 @@ function showImageSelectModal() {
 let _pendingStatusOverride = null;
 async function browseWim() {
   const previousPath = state.currentPath; // Save current directory
-  showLoading('Cargando estructura...');
+  showLoading(t('status.loadingStructure'));
   els.loadingProgressBar.style.display = 'block';
   els.progressFill.style.width = '10%';
   try {
@@ -408,7 +409,7 @@ async function browseWim() {
       _pendingStatusOverride = null;
     } else {
       const total = Object.keys(state.flatTree).length;
-      setStatus(`✅ ${total.toLocaleString()} elementos cargados`, 'success');
+      setStatus(`✅ ${total.toLocaleString()} ${t('status.elementsLoaded')}`, 'success');
     }
   } catch(e) { setStatus(`❌ ${e.message}`, 'error'); }
   finally { hideLoading(); }
@@ -434,7 +435,7 @@ function renderTreeNode(node, parent, depth) {
   const hasKids = dirs.length > 0;
   item.innerHTML = `<span class="tree-toggle ${hasKids && depth < 1 ? 'expanded' : ''}" style="${hasKids ? '' : 'visibility:hidden'}">▶</span>
     <span class="tree-icon">${node.path === '\\' ? '📦' : '📁'}</span>
-    <span class="tree-label">${node.path === '\\' ? '(raíz)' : node.name}</span>`;
+    <span class="tree-label">${node.path === '\\' ? t('tree.root') : node.name}</span>`;
   item.addEventListener('click', e => {
     e.stopPropagation();
     const toggle = item.querySelector('.tree-toggle');
@@ -483,12 +484,12 @@ function renderContent(node) {
   els.fileTableBody.innerHTML = '';
   els.selectAll.checked = false;
   const children = node.children || [];
-  els.fileCount.textContent = `${children.length} elementos`;
-  els.contentTitle.textContent = `📄 ${node.path === '\\' ? 'Raíz' : node.name}`;
+  els.fileCount.textContent = `${children.length} ${t('content.items')}`;
+  els.contentTitle.textContent = `📄 ${node.path === '\\' ? t('content.root') : node.name}`;
   if (!children.length) {
     els.fileTable.style.display = 'none';
     els.contentEmpty.style.display = 'flex';
-    els.contentEmpty.querySelector('p').textContent = 'Esta carpeta está vacía';
+    els.contentEmpty.querySelector('p').textContent = t('content.emptyFolder');
     return;
   }
   const batchSize = 200;
@@ -517,7 +518,7 @@ function createFileRow(child) {
     <td class="col-name">${escapeHtml(child.name)}${cnt}</td>
     <td class="col-size">${size}</td>
     <td class="col-modified">${mod}</td>
-    <td class="col-type">${isDir ? 'Carpeta' : getFileExt(child.name)}</td>`;
+    <td class="col-type">${isDir ? t('content.folder') : getFileExt(child.name)}</td>`;
   tr.addEventListener('click', e => { if (e.target.type !== 'checkbox') handleRowClick(tr, e); });
   tr.addEventListener('dblclick', () => { if (isDir) { expandTreeTo(child.path); navigateTo(child.path); } });
   tr.addEventListener('contextmenu', e => {
@@ -581,7 +582,7 @@ function getFileIcon(n) {
   const m = { exe:'⚙️',dll:'🔧',sys:'🔩',bat:'📜',cmd:'📜',ps1:'📜',txt:'📝',md:'📝',log:'📝',cfg:'📝',ini:'📝',xml:'📝',json:'📝',jpg:'🖼️',jpeg:'🖼️',png:'🖼️',gif:'🖼️',bmp:'🖼️',ico:'🖼️',svg:'🖼️',zip:'📦',rar:'📦','7z':'📦',cab:'📦',msi:'📦',wim:'📦',doc:'📄',docx:'📄',pdf:'📄',xls:'📊',xlsx:'📊',mp3:'🎵',wav:'🎵',mp4:'🎬',avi:'🎬',reg:'🗝️',lnk:'🔗',html:'🌐',css:'🎨',js:'📜' };
   return m[ext] || '📄';
 }
-function getFileExt(n) { const p = n.split('.'); return p.length > 1 ? '.' + p.pop().toUpperCase() : 'Archivo'; }
+function getFileExt(n) { const p = n.split('.'); return p.length > 1 ? '.' + p.pop().toUpperCase() : t('content.file'); }
 function formatSize(bytes) {
   if (bytes === 0) return '0 B';
   const k = 1024, sizes = ['B','KB','MB','GB'];
@@ -610,8 +611,8 @@ function showExtractModal() {
 }
 async function doExtract() {
   const d = els.extractDestInput.value.trim();
-  if (!d) { setStatus('⚠️ Ingresa el directorio de destino', 'error'); return; }
-  hideModal('modalExtract'); showLoading('Extrayendo...');
+  if (!d) { setStatus(t('status.enterDestDir'), 'error'); return; }
+  hideModal('modalExtract'); showLoading(t('status.extracting'));
   try { const r = await api('/api/extract', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ paths: [...state.selectedItems], destDir: d }) }); setStatus(`✅ ${r.message}`, 'success'); }
   catch(e) { setStatus(`❌ ${e.message}`, 'error'); }
   finally { hideLoading(); }
@@ -688,7 +689,7 @@ async function checkConflicts(fileItems) {
 function showConflictModal(result, fileItems) {
   pendingImport = { fileItems, newList: result.newList, conflictList: result.conflictList };
   const total = result.total;
-  els.conflictSummary.textContent = `Se encontraron ${total} elemento(s): ${result.newCount} nuevo(s) y ${result.conflictCount} que ya existen en el WIM.`;
+  els.conflictSummary.textContent = t('status.conflictSummary', total, result.newCount, result.conflictCount);
   els.conflictNewCount.textContent = result.newCount;
   els.conflictReplaceCount.textContent = result.conflictCount;
 
@@ -696,18 +697,18 @@ function showConflictModal(result, fileItems) {
   els.conflictReplaceList.innerHTML = '';
   const MAX_SHOW = 25;
   result.newList.slice(0, MAX_SHOW).forEach(f => { const li = document.createElement('li'); li.textContent = f.relativePath || f.name; els.conflictNewList.appendChild(li); });
-  if (result.newList.length > MAX_SHOW) { const li = document.createElement('li'); li.textContent = `… y ${result.newList.length - MAX_SHOW} más`; li.style.fontStyle = 'italic'; els.conflictNewList.appendChild(li); }
-  if (result.newList.length === 0) { const li = document.createElement('li'); li.textContent = '(ninguno)'; li.style.fontStyle = 'italic'; els.conflictNewList.appendChild(li); }
+  if (result.newList.length > MAX_SHOW) { const li = document.createElement('li'); li.textContent = t('status.andMore', result.newList.length - MAX_SHOW); li.style.fontStyle = 'italic'; els.conflictNewList.appendChild(li); }
+  if (result.newList.length === 0) { const li = document.createElement('li'); li.textContent = t('modal.conflict.none'); li.style.fontStyle = 'italic'; els.conflictNewList.appendChild(li); }
 
   result.conflictList.slice(0, MAX_SHOW).forEach(f => { const li = document.createElement('li'); li.textContent = f.relativePath || f.name; els.conflictReplaceList.appendChild(li); });
-  if (result.conflictList.length > MAX_SHOW) { const li = document.createElement('li'); li.textContent = `… y ${result.conflictList.length - MAX_SHOW} más`; li.style.fontStyle = 'italic'; els.conflictReplaceList.appendChild(li); }
+  if (result.conflictList.length > MAX_SHOW) { const li = document.createElement('li'); li.textContent = t('status.andMore', result.conflictList.length - MAX_SHOW); li.style.fontStyle = 'italic'; els.conflictReplaceList.appendChild(li); }
 
   showModal('modalConflict');
 }
 
 // --- Step 5: Execute batch import (backend revalidates conflicts) ---
 async function executeBatchImport(fileItems) {
-  showLoading(`Importando ${fileItems.length} archivo(s)…`);
+  showLoading(t('status.importing', fileItems.length));
   try {
     const fd = new FormData();
     const destPaths = [];
@@ -731,7 +732,7 @@ async function executeBatchImport(fileItems) {
 // --- Unified entry point: importFiles ---
 async function importFiles(fileItems) {
   if (!fileItems.length) return;
-  setStatus(`Analizando ${fileItems.length} archivo(s)…`, 'info');
+  setStatus(t('status.analyzing', fileItems.length), 'info');
   try {
     const result = await checkConflicts(fileItems);
     if (result.conflictCount > 0) {
@@ -784,7 +785,7 @@ function showDeleteModal() {
   showModal('modalDelete');
 }
 async function doDelete() {
-  hideModal('modalDelete'); showLoading('Eliminando...');
+  hideModal('modalDelete'); showLoading(t('status.deleting'));
   try {
     const r = await api('/api/delete', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ paths: [...state.selectedItems] }) });
     state.selectedItems.clear();
@@ -802,8 +803,8 @@ function showReplaceModal() {
 }
 async function doReplace() {
   const tp = els.replaceTarget.textContent, f = els.replaceFileInput.files[0];
-  if (!f) { setStatus('⚠️ Selecciona un archivo', 'error'); return; }
-  hideModal('modalReplace'); showLoading('Reemplazando...');
+  if (!f) { setStatus(t('status.selectFile'), 'error'); return; }
+  hideModal('modalReplace'); showLoading(t('status.replacing'));
   try {
     const fd = new FormData(); fd.append('targetPath', tp); fd.append('file', f);
     const r = await api('/api/replace', { method:'POST', body: fd });
@@ -819,7 +820,7 @@ async function doExit() {
   try {
     const status = await api('/api/status');
     if (status.activeOperations > 0) {
-      els.exitOpsWarning.textContent = `⚠️ Hay ${status.activeOperations} operación(es) en curso. Forzar el cierre podría corromper datos.`;
+      els.exitOpsWarning.textContent = t('status.opsWarning', status.activeOperations);
       els.exitOpsWarning.style.display = 'block';
     } else {
       els.exitOpsWarning.style.display = 'none';
@@ -829,7 +830,7 @@ async function doExit() {
 }
 async function doConfirmExit() {
   hideModal('modalExit');
-  setStatus('Cerrando WimExplorer...', 'info');
+  setStatus(t('status.closingApp'), 'info');
   try { await api('/api/exit', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ force: true }) }); } catch(e) {}
   try { window.close(); } catch(e) {}
 }
@@ -886,6 +887,7 @@ function switchConsoleTab(tab) {
 
 // ─── Init ─────────────────────────────────────────────────────────
 async function init() {
+  applyLang();
   connectSSE();
   loadLogHistory();
   await check7zRequired();
@@ -941,7 +943,7 @@ async function init() {
   els.btnCopyLogsModal.addEventListener('click', () => {
     const lines = [];
     els.consoleBodyModal.querySelectorAll('.log-entry').forEach(el => lines.push(el.textContent));
-    navigator.clipboard.writeText(lines.join('\n')).then(() => setStatus('📋 Log copiado al portapapeles', 'success')).catch(() => setStatus('❌ Error al copiar', 'error'));
+    navigator.clipboard.writeText(lines.join('\n')).then(() => setStatus(t('status.logCopied'), 'success')).catch(() => setStatus(t('status.copyError'), 'error'));
   });
   els.btnClearLogsModal.addEventListener('click', () => { els.consoleBody.innerHTML = ''; els.consoleBodyModal.innerHTML = ''; });
   els.btnShowLoadingLogs.addEventListener('click', () => {
@@ -1008,5 +1010,15 @@ document.addEventListener('DOMContentLoaded', init);
     const isLight = root.getAttribute('data-theme') === 'light';
     if (isLight) { root.removeAttribute('data-theme'); btn.textContent = '☀️'; localStorage.setItem('wme-theme', 'dark'); }
     else { root.setAttribute('data-theme', 'light'); btn.textContent = '🌙'; localStorage.setItem('wme-theme', 'light'); }
+  });
+})();
+
+/* ─── Language Toggle ──────────────────────────────────────────────── */
+(function() {
+  const btn = document.getElementById('btnLangToggle');
+  btn.textContent = '\ud83c\udf10 ' + getLang().toUpperCase();
+  btn.addEventListener('click', () => {
+    const next = getLang() === 'en' ? 'es' : 'en';
+    setLang(next);
   });
 })();

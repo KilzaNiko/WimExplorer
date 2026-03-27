@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WimExplorer</title>
-  <meta name="description" content="WimExplorer - Editor visual de archivos .wim usando wimlib-imagex + 7-Zip">
+  <meta name="description" content="WimExplorer - Visual editor for .wim files using wimlib-imagex + 7-Zip">
   <link rel="icon" type="image/png" href="/logo_wme.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,49 +26,50 @@
     </div>
     <div class="header-center">
       <div class="wim-path-group">
-        <input type="text" id="wimPathInput" class="wim-path-input" placeholder="Ruta al archivo .wim" spellcheck="false">
-        <button id="btnBrowseFile" class="btn btn-secondary" title="Explorar...">📁</button>
-        <button id="btnOpen" class="btn btn-primary"><span class="btn-icon">📂</span> Abrir</button>
+        <input type="text" id="wimPathInput" class="wim-path-input" data-i18n-placeholder="header.placeholder" placeholder="Path to .wim file" spellcheck="false">
+        <button id="btnBrowseFile" class="btn btn-secondary" data-i18n-title="header.browse" title="📁">📁</button>
+        <button id="btnOpen" class="btn btn-primary"><span class="btn-icon">📂</span> <span data-i18n="header.open">📂 Open</span></button>
       </div>
     </div>
     <div class="header-right">
       <div class="image-selector" id="imageSelectorContainer" style="display:none;">
-        <label for="imageSelect">Imagen:</label>
+        <label for="imageSelect" data-i18n="header.imageLabel">Image:</label>
         <select id="imageSelect" class="image-select"></select>
       </div>
-      <button class="btn btn-theme-toggle" id="btnThemeToggle" title="Cambiar tema">☀️</button>
-      <span class="btn btn-wimlib-version" id="wimlibVersionBadge" title="Versión de wimlib">
+      <button class="btn btn-theme-toggle" id="btnThemeToggle" data-i18n-title="header.themeTitle" title="Switch theme">☀️</button>
+      <button class="btn btn-lang-toggle" id="btnLangToggle" data-i18n-title="header.langTitle" title="Switch language">🌐 EN</button>
+      <span class="btn btn-wimlib-version" id="wimlibVersionBadge" title="wimlib version">
         <span class="wimlib-icon">📦</span> wimlib <span id="wimlibVersionText">…</span>
       </span>
-      <button class="btn btn-7z-status" id="btn7zStatus" title="Estado de 7-Zip">
+      <button class="btn btn-7z-status" id="btn7zStatus" data-i18n-title="header.7zTitle" title="7-Zip status">
         <span class="status-dot" id="sevenZipDot">●</span> 7z
       </button>
-      <button class="btn btn-console" id="btnConsole" title="Mostrar consola de logs">
-        <span class="console-dot" id="consoleDot"></span> 🖥️ Logs
+      <button class="btn btn-console" id="btnConsole" title="Logs">
+        <span class="console-dot" id="consoleDot"></span> <span data-i18n="header.logs">🖥️ Logs</span>
       </button>
-      <button class="btn btn-terminal" id="btnTerminal" title="Terminal de comandos wimlib">
-        ⌨️ Terminal
+      <button class="btn btn-terminal" id="btnTerminal" title="Terminal">
+        <span data-i18n="header.terminal">⌨️ Terminal</span>
       </button>
-      <button class="btn btn-exit" id="btnExit" title="Salir de la aplicación">⏻ Salir</button>
+      <button class="btn btn-exit" id="btnExit" title="Exit"><span data-i18n="header.exit">⏻ Exit</span></button>
     </div>
   </header>
 
   <!-- Breadcrumb -->
   <nav class="breadcrumb-bar" id="breadcrumbBar">
-    <span class="breadcrumb-item active" data-path="\"">📁 \</span>
+    <span class="breadcrumb-item active" data-path="\">📁 \</span>
   </nav>
 
   <!-- Main -->
   <main class="main-content">
     <aside class="tree-panel" id="treePanel">
       <div class="panel-header">
-        <span>📂 Estructura</span>
-        <button class="btn-icon-sm" id="btnCollapseAll" title="Colapsar todo">▼</button>
+        <span data-i18n="tree.title">📂 Structure</span>
+        <button class="btn-icon-sm" id="btnCollapseAll" title="Collapse all">▼</button>
       </div>
       <div class="tree-container" id="treeContainer">
         <div class="empty-state" id="treeEmpty">
           <span class="empty-icon">📁</span>
-          <p>Abre un archivo .wim para ver su contenido</p>
+          <p data-i18n="tree.empty">Open a .wim file to see its contents</p>
         </div>
       </div>
     </aside>
@@ -77,7 +78,7 @@
 
     <section class="content-panel" id="contentPanel">
       <div class="panel-header">
-        <span id="contentTitle">📄 Contenido</span>
+        <span id="contentTitle" data-i18n="content.title">📄 Content</span>
         <span class="file-count" id="fileCount"></span>
       </div>
       <div class="content-container" id="contentContainer"
@@ -85,17 +86,17 @@
            ondragleave="this.classList.remove('drag-over')">
         <div class="empty-state" id="contentEmpty">
           <span class="empty-icon">📄</span>
-          <p>Selecciona una carpeta para ver su contenido</p>
+          <p data-i18n="content.empty">Select a folder to view its contents</p>
         </div>
         <table class="file-table" id="fileTable" style="display:none;">
           <thead>
             <tr>
               <th class="col-check"><input type="checkbox" id="selectAll"></th>
               <th class="col-icon"></th>
-              <th class="col-name">Nombre</th>
-              <th class="col-size">Tamaño</th>
-              <th class="col-modified">Modificado</th>
-              <th class="col-type">Tipo</th>
+              <th class="col-name" data-i18n="table.name">Name</th>
+              <th class="col-size" data-i18n="table.size">Size</th>
+              <th class="col-modified" data-i18n="table.modified">Modified</th>
+              <th class="col-type" data-i18n="table.type">Type</th>
             </tr>
           </thead>
           <tbody id="fileTableBody"></tbody>
@@ -109,19 +110,19 @@
 
     <!-- Tabs -->
     <div class="console-tabs">
-      <button class="console-tab active" id="tabLogs" data-tab="logs">🖥️ Logs</button>
-      <button class="console-tab" id="tabTerminal" data-tab="terminal">⌨️ Terminal</button>
+      <button class="console-tab active" id="tabLogs" data-tab="logs" data-i18n="console.tabLogs">🖥️ Logs</button>
+      <button class="console-tab" id="tabTerminal" data-tab="terminal" data-i18n="console.tabTerminal">⌨️ Terminal</button>
     </div>
 
     <!-- Pane: Logs -->
     <div class="console-pane" id="paneLogsHeader">
       <div class="console-header">
-        <span class="console-header-title">🖥️ Consola de Logs</span>
+        <span class="console-header-title" data-i18n="console.title">🖥️ Log Console</span>
         <div class="console-actions">
-          <button class="btn-icon-sm" id="btnCopyConsole" title="Copiar log">📋 Copiar log</button>
-          <button class="btn-icon-sm" id="btnLogsFullscreen" title="Pantalla completa">⛶ Pantalla completa</button>
-          <button class="btn-icon-sm" id="btnClearConsole" title="Limpiar">🗑️</button>
-          <button class="btn-icon-sm" id="btnCloseConsole" title="Cerrar">✕</button>
+          <button class="btn-icon-sm" id="btnCopyConsole" data-i18n="console.copyLog" title="Copy log">📋 Copy log</button>
+          <button class="btn-icon-sm" id="btnLogsFullscreen" data-i18n="console.fullscreen" title="Fullscreen">⛶ Fullscreen</button>
+          <button class="btn-icon-sm" id="btnClearConsole" title="Clear">🗑️</button>
+          <button class="btn-icon-sm" id="btnCloseConsole" title="Close">✕</button>
         </div>
       </div>
       <div class="console-body" id="consoleBody"></div>
@@ -130,20 +131,21 @@
     <!-- Pane: Terminal -->
     <div class="console-pane" id="paneTerminalHeader" style="display:none;">
       <div class="console-header">
-        <span class="console-header-title">⌨️ Terminal wimlib</span>
+        <span class="console-header-title" data-i18n="terminal.title">⌨️ wimlib Terminal</span>
         <div class="console-actions">
-          <button class="btn-icon-sm" id="btnCopyTerminal" title="Copiar texto terminal">📋 Copiar texto terminal</button>
-          <button class="btn-icon-sm" id="btnTerminalFullscreen" title="Pantalla completa">⛶ Pantalla completa</button>
-          <button class="btn-icon-sm" id="btnCloseTerminal" title="Cerrar">✕</button>
+          <button class="btn-icon-sm" id="btnCopyTerminal" data-i18n="terminal.copyText" title="Copy terminal text">📋 Copy terminal text</button>
+          <button class="btn-icon-sm" id="btnTerminalFullscreen" data-i18n="terminal.fullscreen" title="Fullscreen">⛶ Fullscreen</button>
+          <button class="btn-icon-sm" id="btnCloseTerminal" title="Close">✕</button>
         </div>
       </div>
       <div class="terminal-body" id="terminalBody"></div>
       <div class="terminal-input-bar">
         <span class="terminal-prompt">wimlib-imagex&gt;</span>
         <input type="text" id="terminalInput" class="terminal-input"
-               placeholder="ej: info test.wim 1  |  -help para ayuda"
+               data-i18n-placeholder="terminal.placeholder"
+               placeholder="e.g.: info test.wim 1  |  -help for help"
                autocomplete="off" spellcheck="false">
-        <button class="btn btn-primary btn-sm" id="btnRunTerminal">Ejecutar</button>
+        <button class="btn btn-primary btn-sm" id="btnRunTerminal" data-i18n="terminal.run">Run</button>
       </div>
     </div>
 
@@ -153,22 +155,22 @@
   <footer class="toolbar">
     <div class="toolbar-left">
       <div class="btn-split" id="btnAddGroup">
-        <button class="btn btn-action" id="btnAdd" disabled><span class="btn-icon">➕</span> Agregar</button>
+        <button class="btn btn-action" id="btnAdd" disabled><span class="btn-icon">➕</span> <span data-i18n="toolbar.add">Add</span></button>
         <button class="btn btn-action btn-split-toggle" id="btnAddMenu" disabled>▼</button>
         <div class="btn-split-dropdown" id="addDropdown" style="display:none;">
-          <div class="split-option" id="optAddFiles">📄 Archivos</div>
-          <div class="split-option" id="optAddFolder">📁 Carpeta</div>
+          <div class="split-option" id="optAddFiles" data-i18n="toolbar.addFiles">📄 Files</div>
+          <div class="split-option" id="optAddFolder" data-i18n="toolbar.addFolder">📁 Folder</div>
         </div>
       </div>
-      <button class="btn btn-action" id="btnDelete" disabled><span class="btn-icon">🗑️</span> Eliminar</button>
-      <button class="btn btn-action" id="btnExtract" disabled><span class="btn-icon">📥</span> Extraer</button>
-      <button class="btn btn-action" id="btnReplace" disabled><span class="btn-icon">🔄</span> Reemplazar</button>
+      <button class="btn btn-action" id="btnDelete" disabled><span class="btn-icon">🗑️</span> <span data-i18n="toolbar.delete">Delete</span></button>
+      <button class="btn btn-action" id="btnExtract" disabled><span class="btn-icon">📥</span> <span data-i18n="toolbar.extract">Extract</span></button>
+      <button class="btn btn-action" id="btnReplace" disabled><span class="btn-icon">🔄</span> <span data-i18n="toolbar.replace">Replace</span></button>
     </div>
     <div class="toolbar-right">
       <div class="status-bar" id="statusBar">
         <span class="status-icon">⏳</span>
-        <span class="status-text" id="statusText">Esperando archivo .wim...</span>
-        <button class="btn-icon-sm btn-copy-status" id="btnCopyStatus" title="Copiar estado">📋</button>
+        <span class="status-text" id="statusText" data-i18n="status.waiting">Waiting for .wim file...</span>
+        <button class="btn-icon-sm btn-copy-status" id="btnCopyStatus" data-i18n-title="toolbar.copyStatus" title="Copy status">📋</button>
       </div>
     </div>
   </footer>
@@ -176,15 +178,15 @@
   <!-- Modal: Confirm Delete -->
   <div class="modal-overlay" id="modalDelete" style="display:none;">
     <div class="modal">
-      <div class="modal-header"><h3>🗑️ Confirmar eliminación</h3><button class="modal-close" data-modal="modalDelete">✕</button></div>
+      <div class="modal-header"><h3 data-i18n="modal.delete.title">🗑️ Confirm deletion</h3><button class="modal-close" data-modal="modalDelete">✕</button></div>
       <div class="modal-body">
-        <p>¿Eliminar los siguientes elementos?</p>
+        <p data-i18n="modal.delete.body">Delete the following items?</p>
         <ul id="deleteList" class="modal-list"></ul>
-        <p class="modal-warning">⚠️ Esta acción no se puede deshacer.</p>
+        <p class="modal-warning" data-i18n="modal.delete.warning">⚠️ This action cannot be undone.</p>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-modal="modalDelete">Cancelar</button>
-        <button class="btn btn-danger" id="btnConfirmDelete">Eliminar</button>
+        <button class="btn btn-secondary" data-modal="modalDelete" data-i18n="modal.delete.cancel">Cancel</button>
+        <button class="btn btn-danger" id="btnConfirmDelete" data-i18n="modal.delete.confirm">Delete</button>
       </div>
     </div>
   </div>
@@ -192,18 +194,18 @@
   <!-- Modal: Extract -->
   <div class="modal-overlay" id="modalExtract" style="display:none;">
     <div class="modal">
-      <div class="modal-header"><h3>📥 Extraer archivos</h3><button class="modal-close" data-modal="modalExtract">✕</button></div>
+      <div class="modal-header"><h3 data-i18n="modal.extract.title">📥 Extract files</h3><button class="modal-close" data-modal="modalExtract">✕</button></div>
       <div class="modal-body">
-        <p>Directorio de destino:</p>
+        <p data-i18n="modal.extract.body">Destination directory:</p>
         <div style="display:flex;gap:6px;">
-          <input type="text" id="extractDestInput" class="modal-input" placeholder="C:\ruta\destino" style="margin-bottom:0;flex:1;">
-          <button class="btn btn-secondary" id="btnBrowseExtractDest" title="Buscar carpeta">📁</button>
+          <input type="text" id="extractDestInput" class="modal-input" data-i18n-placeholder="modal.extract.placeholder" placeholder="C:\destination\path" style="margin-bottom:0;flex:1;">
+          <button class="btn btn-secondary" id="btnBrowseExtractDest" data-i18n-title="modal.extract.browseTitle" title="Browse folder">📁</button>
         </div>
         <ul id="extractList" class="modal-list"></ul>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-modal="modalExtract">Cancelar</button>
-        <button class="btn btn-primary" id="btnConfirmExtract">Extraer</button>
+        <button class="btn btn-secondary" data-modal="modalExtract" data-i18n="modal.extract.cancel">Cancel</button>
+        <button class="btn btn-primary" id="btnConfirmExtract" data-i18n="modal.extract.confirm">Extract</button>
       </div>
     </div>
   </div>
@@ -211,16 +213,16 @@
   <!-- Modal: Replace -->
   <div class="modal-overlay" id="modalReplace" style="display:none;">
     <div class="modal">
-      <div class="modal-header"><h3>🔄 Reemplazar archivo</h3><button class="modal-close" data-modal="modalReplace">✕</button></div>
+      <div class="modal-header"><h3 data-i18n="modal.replace.title">🔄 Replace file</h3><button class="modal-close" data-modal="modalReplace">✕</button></div>
       <div class="modal-body">
-        <p>Archivo a reemplazar:</p>
+        <p data-i18n="modal.replace.fileLabel">File to replace:</p>
         <p class="modal-target" id="replaceTarget"></p>
-        <p>Nuevo archivo:</p>
+        <p data-i18n="modal.replace.newFile">New file:</p>
         <input type="file" id="replaceFileInput" class="modal-file-input">
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-modal="modalReplace">Cancelar</button>
-        <button class="btn btn-primary" id="btnConfirmReplace">Reemplazar</button>
+        <button class="btn btn-secondary" data-modal="modalReplace" data-i18n="modal.replace.cancel">Cancel</button>
+        <button class="btn btn-primary" id="btnConfirmReplace" data-i18n="modal.replace.confirm">Replace</button>
       </div>
     </div>
   </div>
@@ -228,14 +230,14 @@
   <!-- Modal: Exit Confirm -->
   <div class="modal-overlay" id="modalExit" style="display:none;">
     <div class="modal">
-      <div class="modal-header"><h3>⏻ Cerrar WimExplorer</h3><button class="modal-close" data-modal="modalExit">✕</button></div>
+      <div class="modal-header"><h3 data-i18n="modal.exit.title">⏻ Close WimExplorer</h3><button class="modal-close" data-modal="modalExit">✕</button></div>
       <div class="modal-body">
-        <p id="exitMessage">¿Estás seguro de que deseas cerrar WimExplorer y detener el servicio?</p>
+        <p id="exitMessage" data-i18n="modal.exit.body">Are you sure you want to close WimExplorer and stop the service?</p>
         <p id="exitOpsWarning" class="modal-warning" style="display:none;"></p>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-modal="modalExit">Cancelar</button>
-        <button class="btn btn-danger" id="btnConfirmExit">Cerrar aplicación</button>
+        <button class="btn btn-secondary" data-modal="modalExit" data-i18n="modal.exit.cancel">Cancel</button>
+        <button class="btn btn-danger" id="btnConfirmExit" data-i18n="modal.exit.confirm">Close application</button>
       </div>
     </div>
   </div>
@@ -243,23 +245,23 @@
   <!-- Modal: Drag-Drop Conflict -->
   <div class="modal-overlay" id="modalConflict" style="display:none;">
     <div class="modal">
-      <div class="modal-header"><h3>⚠️ Conflictos detectados</h3><button class="modal-close" data-modal="modalConflict">✕</button></div>
+      <div class="modal-header"><h3 data-i18n="modal.conflict.title">⚠️ Conflicts detected</h3><button class="modal-close" data-modal="modalConflict">✕</button></div>
       <div class="modal-body">
         <p id="conflictSummary"></p>
         <div class="conflict-columns">
           <div class="conflict-col">
-            <h4>🆕 Nuevos (<span id="conflictNewCount">0</span>)</h4>
+            <h4><span data-i18n="modal.conflict.new">🆕 New</span> (<span id="conflictNewCount">0</span>)</h4>
             <ul id="conflictNewList" class="modal-list"></ul>
           </div>
           <div class="conflict-col">
-            <h4>🔄 Reemplazos (<span id="conflictReplaceCount">0</span>)</h4>
+            <h4><span data-i18n="modal.conflict.replace">🔄 Replacements</span> (<span id="conflictReplaceCount">0</span>)</h4>
             <ul id="conflictReplaceList" class="modal-list"></ul>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-modal="modalConflict">Cancelar</button>
-        <button class="btn btn-primary" id="btnConfirmConflict">✅ Importar todo</button>
+        <button class="btn btn-secondary" data-modal="modalConflict" data-i18n="modal.conflict.cancel">Cancel</button>
+        <button class="btn btn-primary" id="btnConfirmConflict" data-i18n="modal.conflict.confirm">✅ Import all</button>
       </div>
     </div>
   </div>
@@ -267,9 +269,9 @@
   <!-- Modal: Image Selection (multi-image WIM) -->
   <div class="modal-overlay" id="modalImageSelect" style="display:none;">
     <div class="modal" style="min-width:500px;">
-      <div class="modal-header"><h3>📦 Seleccionar imagen</h3><button class="modal-close" data-modal="modalImageSelect">✕</button></div>
+      <div class="modal-header"><h3 data-i18n="modal.imageSelect.title">📦 Select image</h3><button class="modal-close" data-modal="modalImageSelect">✕</button></div>
       <div class="modal-body">
-        <p>El archivo WIM contiene múltiples imágenes. Selecciona la que deseas explorar:</p>
+        <p data-i18n="modal.imageSelect.body">The WIM file contains multiple images. Select the one you want to explore:</p>
         <div id="imageSelectList" class="image-select-list"></div>
       </div>
     </div>
@@ -278,14 +280,14 @@
   <!-- Modal: Folder selection warning -->
   <div class="modal-overlay" id="modalFolderWarn" style="display:none;">
     <div class="modal">
-      <div class="modal-header"><h3>📁 Seleccionar carpeta</h3><button class="modal-close" data-modal="modalFolderWarn">✕</button></div>
+      <div class="modal-header"><h3 data-i18n="modal.folderWarn.title">📁 Select folder</h3><button class="modal-close" data-modal="modalFolderWarn">✕</button></div>
       <div class="modal-body">
-        <p>Se abrirá el selector de carpetas. El navegador puede mostrar un aviso de confirmación adicional para acceder a los archivos.</p>
-        <p style="color:var(--text-muted);font-size:12px;">Esto es normal y necesario para leer la estructura de la carpeta seleccionada.</p>
+        <p data-i18n="modal.folderWarn.body">The folder picker will open. The browser may show an additional confirmation prompt to access the files.</p>
+        <p style="color:var(--text-muted);font-size:12px;" data-i18n="modal.folderWarn.note">This is normal and necessary to read the structure of the selected folder.</p>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-modal="modalFolderWarn">Cancelar</button>
-        <button class="btn btn-primary" id="btnConfirmFolderSelect">Continuar</button>
+        <button class="btn btn-secondary" data-modal="modalFolderWarn" data-i18n="modal.folderWarn.cancel">Cancel</button>
+        <button class="btn btn-primary" id="btnConfirmFolderSelect" data-i18n="modal.folderWarn.confirm">Continue</button>
       </div>
     </div>
   </div>
@@ -293,27 +295,27 @@
   <!-- Modal: 7-Zip Required -->
   <div class="modal-overlay" id="modal7zRequired" style="display:none;">
     <div class="modal" style="min-width:480px;">
-      <div class="modal-header"><h3>⚠️ 7-Zip requerido</h3></div>
+      <div class="modal-header"><h3 data-i18n="modal.7z.title">⚠️ 7-Zip required</h3></div>
       <div class="modal-body">
-        <p style="font-size:14px;color:var(--text-primary);margin-bottom:14px;">
-          WimExplorer necesita <strong>7-Zip</strong> para funcionar correctamente.<br>
-          Selecciona una opción:
+        <p style="font-size:14px;color:var(--text-primary);margin-bottom:14px;" data-i18n="modal.7z.body">
+          WimExplorer requires <strong>7-Zip</strong> to work properly.<br>
+          Select an option:
         </p>
         <div class="seven-zip-options">
           <button class="btn btn-7z-option btn-primary" id="btn7zInstallWinget">
-            <span class="btn-icon">📥</span> Instalar 7-Zip automáticamente
-            <span class="btn-sub">via winget</span>
+            <span class="btn-icon">📥</span> <span data-i18n="modal.7z.installWinget">Install 7-Zip automatically</span>
+            <span class="btn-sub" data-i18n="modal.7z.installSub">via winget</span>
           </button>
           <button class="btn btn-7z-option btn-secondary" id="btn7zBrowsePath">
-            <span class="btn-icon">📁</span> Ya tengo 7-Zip instalado
-            <span class="btn-sub">buscar carpeta manualmente</span>
+            <span class="btn-icon">📁</span> <span data-i18n="modal.7z.browse">I already have 7-Zip installed</span>
+            <span class="btn-sub" data-i18n="modal.7z.browseSub">browse folder manually</span>
           </button>
           <button class="btn btn-7z-option btn-exit-option" id="btn7zExit">
-            <span class="btn-icon">🚪</span> Salir de WimExplorer
+            <span class="btn-icon">🚪</span> <span data-i18n="modal.7z.exit">Exit WimExplorer</span>
           </button>
         </div>
         <div class="seven-zip-progress" id="sevenZipProgress" style="display:none;">
-          <div class="progress-label" id="sevenZipProgressLabel">Instalando 7-Zip...</div>
+          <div class="progress-label" id="sevenZipProgressLabel" data-i18n="modal.7z.installing">Installing 7-Zip via winget...</div>
           <div class="loading-progress-bar" style="display:block;width:100%;margin-top:8px;">
             <div class="progress-fill" id="sevenZipProgressFill" style="width:30%;animation:progressPulse 2s infinite;"></div>
           </div>
@@ -329,20 +331,20 @@
   <div class="loading-overlay" id="loadingOverlay" style="display:none;">
     <div class="loading-spinner">
       <div class="spinner"></div>
-      <p id="loadingText">Procesando...</p>
+      <p id="loadingText" data-i18n="loading.processing">Processing...</p>
       <div class="loading-progress-bar" id="loadingProgressBar" style="display:none;">
         <div class="progress-fill" id="progressFill"></div>
       </div>
-      <button class="btn btn-secondary btn-sm" id="btnShowLoadingLogs" style="display:none;">🖥️ Ver consola</button>
+      <button class="btn btn-secondary btn-sm" id="btnShowLoadingLogs" style="display:none;" data-i18n="loading.viewConsole">🖥️ View console</button>
     </div>
   </div>
 
   <!-- Context Menu -->
   <div class="context-menu" id="contextMenu" style="display:none;">
-    <div class="context-item" data-action="extract">📥 Extraer</div>
-    <div class="context-item" data-action="replace">🔄 Reemplazar</div>
+    <div class="context-item" data-action="extract" data-i18n="ctx.extract">📥 Extract</div>
+    <div class="context-item" data-action="replace" data-i18n="ctx.replace">🔄 Replace</div>
     <div class="context-separator"></div>
-    <div class="context-item danger" data-action="delete">🗑️ Eliminar</div>
+    <div class="context-item danger" data-action="delete" data-i18n="ctx.delete">🗑️ Delete</div>
   </div>
 
   <input type="file" id="addFileInput" multiple style="display:none;">
@@ -352,10 +354,10 @@
   <div class="modal-overlay" id="modalLogsFullscreen" style="display:none;">
     <div class="modal modal-terminal-full">
       <div class="modal-header">
-        <h3>🖥️ Consola de Logs</h3>
+        <h3 data-i18n="modal.logsFull.title">🖥️ Log Console</h3>
         <div style="display:flex;gap:6px;align-items:center;">
-          <button class="btn-icon-sm" id="btnCopyLogsModal" title="Copiar log">📋 Copiar</button>
-          <button class="btn-icon-sm" id="btnClearLogsModal" title="Limpiar">🗑️</button>
+          <button class="btn-icon-sm" id="btnCopyLogsModal" data-i18n="modal.logsFull.copy" title="Copy">📋 Copy</button>
+          <button class="btn-icon-sm" id="btnClearLogsModal" title="Clear">🗑️</button>
           <button class="modal-close" data-modal="modalLogsFullscreen">✕</button>
         </div>
       </div>
@@ -369,9 +371,9 @@
   <div class="modal-overlay" id="modalTerminal" style="display:none;">
     <div class="modal modal-terminal-full">
       <div class="modal-header">
-        <h3>⌨️ Terminal wimlib</h3>
+        <h3 data-i18n="modal.termFull.title">⌨️ wimlib Terminal</h3>
         <div style="display:flex;gap:6px;align-items:center;">
-          <button class="btn-icon-sm" id="btnCopyTerminalModal">📋 Copiar</button>
+          <button class="btn-icon-sm" id="btnCopyTerminalModal" data-i18n="modal.termFull.copy">📋 Copy</button>
           <button class="modal-close" data-modal="modalTerminal">✕</button>
         </div>
       </div>
@@ -381,13 +383,15 @@
       <div class="terminal-input-bar terminal-input-bar-modal">
         <span class="terminal-prompt">wimlib-imagex&gt;</span>
         <input type="text" id="terminalInputModal" class="terminal-input"
-               placeholder="ej: info test.wim 1  |  -help para ayuda"
+               data-i18n-placeholder="terminal.placeholder"
+               placeholder="e.g.: info test.wim 1  |  -help for help"
                autocomplete="off" spellcheck="false">
-        <button class="btn btn-primary btn-sm" id="btnRunTerminalModal">Ejecutar</button>
+        <button class="btn btn-primary btn-sm" id="btnRunTerminalModal" data-i18n="terminal.run">Run</button>
       </div>
     </div>
   </div>
 
+  <script src="i18n.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

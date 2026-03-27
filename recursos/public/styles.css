@@ -268,6 +268,10 @@ body { display:flex; flex-direction:column; }
 .btn-theme-toggle { background:transparent; border:1px solid var(--border); padding:5px 9px; font-size:15px; color:var(--text-secondary); cursor:pointer; line-height:1; }
 .btn-theme-toggle:hover { background:var(--bg-hover); border-color:var(--accent-blue); }
 
+/* ─── Language Toggle Button ─────────────────────── */
+.btn-lang-toggle { background:transparent; border:1px solid var(--border); padding:5px 10px; font-size:12px; font-weight:700; font-family:var(--font-mono); color:var(--text-secondary); cursor:pointer; letter-spacing:0.5px; line-height:1; min-width:38px; text-align:center; }
+.btn-lang-toggle:hover { background:var(--bg-hover); border-color:var(--accent-blue); color:var(--accent-blue); }
+
 /* Light theme overrides for elements using hard-coded rgba colors */
 [data-theme="light"] .modal-overlay { background:rgba(0,0,0,0.35); }
 [data-theme="light"] .loading-overlay { background:rgba(0,0,0,0.3); }

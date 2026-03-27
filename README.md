@@ -1,204 +1,209 @@
+🌐 **English** | **[Español](README.es.md)**
+
 # WimExplorer
 
 <p align="center">
-  <img src="recursos/logo_wme.png" alt="Logo de WimExplorer" width="110">
+  <img src="recursos/logo_wme.png" alt="WimExplorer Logo" width="110">
 </p>
 
 <p align="center">
-  <strong>Editor visual para archivos WIM, ESD y SWM en Windows</strong><br>
-  Explora, extrae, agrega, reemplaza y elimina contenido sin pelearte con la linea de comandos.
+  <strong>Visual editor for WIM, ESD and SWM files on Windows</strong><br>
+  Browse, extract, add, replace and delete content without fighting with the command line.
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.1-0f172a?style=for-the-badge" alt="v1.1">
+  <img src="https://img.shields.io/badge/Version-1.2-0f172a?style=for-the-badge" alt="v1.2">
   <img src="https://img.shields.io/badge/Windows-7%20%7C%2010%20%7C%2011-0f172a?style=for-the-badge&logo=windows&logoColor=white" alt="Windows">
   <img src="https://img.shields.io/badge/Node.js-18%2B-166534?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js 18+">
-  <img src="https://img.shields.io/badge/wimlib-integrado-1d4ed8?style=for-the-badge" alt="wimlib">
-  <img src="https://img.shields.io/badge/7--Zip-requerido-9a3412?style=for-the-badge" alt="7-Zip">
+  <img src="https://img.shields.io/badge/wimlib-bundled-1d4ed8?style=for-the-badge" alt="wimlib">
+  <img src="https://img.shields.io/badge/7--Zip-required-9a3412?style=for-the-badge" alt="7-Zip">
 </p>
 
 ---
 
-## Que es WimExplorer
+## What is WimExplorer
 
-WimExplorer es una interfaz visual para trabajar con imagenes `.wim`, `.esd` y `.swm` usando `wimlib-imagex` como motor de fondo. La idea es simple: hacer que editar este tipo de archivos sea rapido, claro y comodo, incluso si no quieres recordar comandos, parametros o flujos manuales.
+WimExplorer is a visual interface for working with `.wim`, `.esd` and `.swm` images using `wimlib-imagex` as a backend engine. The idea is simple: make editing these file types fast, clear and comfortable, even if you don't want to remember commands, parameters or manual workflows.
 
-Si alguna vez abrir, inspeccionar o modificar una imagen WIM te resulto tedioso, esta herramienta busca eliminar esa friccion.
+If you've ever found opening, inspecting or modifying a WIM image tedious, this tool aims to eliminate that friction.
 
-## Por que destaca
+## Why it stands out
 
-| Ventaja | Que significa en la practica |
+| Advantage | What it means in practice |
 |---|---|
-| Interfaz visual real | Navegas carpetas y archivos con arbol, tabla, breadcrumb y acciones directas |
-| Operaciones comunes en un clic | Extraer, agregar, reemplazar y eliminar sin escribir comandos |
-| Pensado para trabajo real | Deteccion de conflictos, logs en vivo, selector de imagen y bandeja del sistema |
-| Motor confiable | Todas las operaciones pasan por `wimlib-imagex`, manteniendo compatibilidad con el formato |
-| Launcher inteligente | Verifica requisitos automaticamente antes de iniciar la aplicacion |
+| Real visual interface | Browse folders and files with a tree, table, breadcrumb and direct actions |
+| Common operations in one click | Extract, add, replace and delete without writing commands |
+| Built for real work | Conflict detection, live logs, image selector and system tray |
+| Reliable engine | All operations go through `wimlib-imagex`, maintaining format compatibility |
+| Smart launcher | Automatically verifies requirements before starting the application |
 
-## Caracteristicas principales
+## Key features
 
-| Funcion | Descripcion |
+| Feature | Description |
 |---|---|
-| Explorador visual | Vista tipo Explorador de Windows con arbol de carpetas y tabla de contenido |
-| Multi-imagen | Selector para WIM con varias imagenes internas |
-| Extraccion selectiva | Exporta archivos o carpetas a cualquier ruta del sistema |
-| Agregar contenido | Importa archivos o carpetas completas desde botones o arrastrando y soltando |
-| Reemplazo de archivos | Sustituye elementos existentes de forma directa |
-| Eliminacion segura | Confirmacion visual antes de borrar contenido |
-| Deteccion de conflictos | Detecta duplicados antes de importar y permite decidir como continuar |
-| Logs en tiempo real | Consola con streaming en vivo para seguir cada operacion |
-| Terminal integrada | Ejecuta comandos de `wimlib-imagex` desde la propia interfaz |
-| Integracion con 7-Zip | Obtiene metadatos como tamano y fecha para mejorar el listado |
-| Bandeja del sistema | Acceso rapido y cierre controlado desde el area de notificacion |
+| Visual explorer | Windows Explorer-style view with folder tree and content table |
+| Multi-image | Selector for WIM files with multiple internal images |
+| Selective extraction | Export files or folders to any system path |
+| Add content | Import files or folders via buttons or drag-and-drop |
+| File replacement | Replace existing items directly |
+| Safe deletion | Visual confirmation before deleting content |
+| Conflict detection | Detects duplicates before importing and lets you decide how to proceed |
+| Real-time logs | Console with live streaming to follow every operation |
+| Built-in terminal | Run `wimlib-imagex` commands from the interface itself |
+| 7-Zip integration | Gets metadata like size and date to enhance the file listing |
+| System tray | Quick access and controlled shutdown from the notification area |
 
-## Inicio rapido
+## Quick start
 
-1. Ejecuta `WimExplorer-v1.1.exe`.
-2. El launcher verificara automaticamente los requisitos del sistema.
-3. La aplicacion iniciara el servidor local y abrira `http://localhost:3000`.
-4. Selecciona tu archivo `.wim`, `.esd` o `.swm`.
-5. Empieza a navegar y editar desde la interfaz.
+1. Run `WimExplorer-v1.2.exe`.
+2. The launcher will automatically verify system requirements.
+3. The application will start the local server and open `http://localhost:3000`.
+4. Select your `.wim`, `.esd` or `.swm` file.
+5. Start browsing and editing from the interface.
 
-## Launcher inteligente (v1.1)
+## Smart Launcher (v1.2)
 
-`WimExplorer-v1.1.exe` es el unico punto de entrada para el usuario. Al ejecutarlo realiza estas verificaciones antes de iniciar:
+`WimExplorer-v1.2.exe` is the only entry point for the user. When run, it performs these checks before starting:
 
-### 1. Verificacion de Node.js
+### 1. Node.js check
 
-Si Node.js no esta instalado, el launcher muestra un dialogo con tres opciones:
+If Node.js is not installed, the launcher shows a dialog with three options:
 
-| Opcion | Accion |
+| Option | Action |
 |---|---|
-| Si | Instalacion automatica via `winget` (solicita permisos de administrador) |
-| No | Abre `https://nodejs.org` para instalacion manual |
-| Cancelar | Sale sin hacer nada |
+| Yes | Automatic installation via `winget` (requests administrator permissions) |
+| No | Opens `https://nodejs.org` for manual installation |
+| Cancel | Exits without doing anything |
 
-Tras la instalacion automatica, el launcher re-verifica que Node quedo disponible antes de continuar.
+After automatic installation, the launcher re-verifies that Node is available before continuing.
 
-### 2. Instalacion de dependencias
+### 2. Dependency installation
 
-Si la carpeta `node_modules` no existe (primera ejecucion tras descomprimir el release), el launcher pregunta al usuario y ejecuta `npm install` automaticamente en la ruta correcta.
+If the `node_modules` folder doesn't exist (first run after extracting the release), the launcher asks the user and runs `npm install` automatically at the correct path.
 
-### 3. Inicio de la aplicacion
+### 3. Application startup
 
-Con todos los requisitos cumplidos, lanza `node server.js` en segundo plano sin mostrar consola.
+With all requirements met, it launches `node server.js` in the background without showing a console window.
 
-> El launcher resuelve todas las rutas en tiempo de ejecucion a partir de su propia ubicacion. La carpeta completa puede moverse a cualquier equipo o ruta sin que deje de funcionar.
+> The launcher resolves all paths at runtime based on its own location. The entire folder can be moved to any machine or path and it will continue to work.
 
-## Flujo de uso recomendado
+## Recommended workflow
 
 ```text
-Ejecutar WimExplorer-v1.1.exe
--> Launcher verifica Node.js (instala si falta)
--> Launcher verifica node_modules (instala si faltan)
--> Cargar archivo WIM/ESD/SWM
--> Elegir imagen interna si aplica
--> Explorar carpetas y archivos
--> Extraer / Agregar / Reemplazar / Eliminar
--> Revisar logs en tiempo real
--> Cerrar desde la interfaz o la bandeja del sistema
+Run WimExplorer-v1.2.exe
+-> Launcher checks Node.js (installs if missing)
+-> Launcher checks node_modules (installs if missing)
+-> Load WIM/ESD/SWM file
+-> Choose internal image if applicable
+-> Browse folders and files
+-> Extract / Add / Replace / Delete
+-> Review real-time logs
+-> Close from the interface or the system tray
 ```
 
-## Requisitos
+## Requirements
 
-- Windows 7, 10 u 11
-- Node.js 18 o superior *(el launcher puede instalarlo automaticamente)*
-- 7-Zip instalado
+- Windows 7, 10 or 11
+- Node.js 18 or higher *(the launcher can install it automatically)*
+- 7-Zip installed
 
-### Nota sobre 7-Zip
+### Note about 7-Zip
 
-WimExplorer necesita `7z.exe` para enriquecer el listado de archivos. Si no lo encuentra, la aplicacion intenta ayudarte con una instalacion via `winget` o permitiendo indicar la ruta manualmente.
+WimExplorer needs `7z.exe` to enrich the file listing. If it can't find it, the application tries to help you with an installation via `winget` or by allowing you to specify the path manually.
 
-## Interfaz y experiencia
+## Interface and experience
 
-La aplicacion esta construida con una UI oscura de estilo moderno, con:
+The application is built with a modern dark-style UI, featuring:
 
-- panel de arbol lateral para la estructura
-- tabla de contenido con nombre, tamano, fecha y tipo
-- breadcrumb de navegacion
-- barra de acciones inferior
-- consola de logs y terminal integrada
-- indicadores de estado para `wimlib` y `7-Zip`
+- side tree panel for structure
+- content table with name, size, date and type
+- navigation breadcrumb
+- bottom action bar
+- log console and built-in terminal
+- status indicators for `wimlib` and `7-Zip`
+- EN/ES language toggle
 
-## Atajos utiles
+## Useful shortcuts
 
-| Atajo | Accion |
+| Shortcut | Action |
 |---|---|
-| `Enter` | Abrir archivo WIM cuando el campo de ruta tiene foco |
-| `Delete` | Eliminar elementos seleccionados |
-| `Ctrl + A` | Seleccionar todos los archivos visibles |
-| `Esc` | Cerrar modales y menus contextuales |
-| Doble clic | Entrar en una carpeta |
-| Clic derecho | Abrir menu contextual |
-| Arrastrar y soltar | Importar archivos o carpetas |
+| `Enter` | Open WIM file when the path field has focus |
+| `Delete` | Delete selected items |
+| `Ctrl + A` | Select all visible files |
+| `Esc` | Close modals and context menus |
+| Double click | Enter a folder |
+| Right click | Open context menu |
+| Drag and drop | Import files or folders |
 
-## Tecnologias
+## Technologies
 
 - Backend: Node.js + Express
-- Frontend: HTML, CSS y JavaScript vanilla
-- Motor de imagenes: `wimlib-imagex`
-- Soporte de listado avanzado: `7-Zip`
-- Dependencias destacadas: `multer`, `open`, `systray2`, `7zip-bin`
+- Frontend: HTML, CSS and vanilla JavaScript
+- Image engine: `wimlib-imagex`
+- Advanced listing support: `7-Zip`
+- Notable dependencies: `multer`, `open`, `systray2`, `7zip-bin`
 
-## Licencias y terceros
+## Licenses and third parties
 
-WimExplorer utiliza `wimlib` como motor principal para trabajar con imagenes WIM.
+WimExplorer uses `wimlib` as the main engine for working with WIM images.
 
-- `wimlib` se redistribuye con sus textos de licencia dentro de `LICENSES/`
-- el archivo [LICENSES/wimlib-COPYING.txt](LICENSES/wimlib-COPYING.txt) resume las condiciones de licencia del proyecto `wimlib`
-- el texto de GPLv3 se incluye en [LICENSES/wimlib-COPYING.GPLv3.txt](LICENSES/wimlib-COPYING.GPLv3.txt)
-- el texto de LGPL se incluye en [LICENSES/wimlib-COPYING.LGPL.txt](LICENSES/wimlib-COPYING.LGPL.txt)
+- `wimlib` is redistributed with its license texts inside `LICENSES/`
+- the file [LICENSES/wimlib-COPYING.txt](LICENSES/wimlib-COPYING.txt) summarizes the license terms of the `wimlib` project
+- the GPLv3 text is included in [LICENSES/wimlib-COPYING.GPLv3.txt](LICENSES/wimlib-COPYING.GPLv3.txt)
+- the LGPL text is included in [LICENSES/wimlib-COPYING.LGPL.txt](LICENSES/wimlib-COPYING.LGPL.txt)
 
-Nota importante:
+Important note:
 
-- `wimlib` en conjunto puede redistribuirse bajo GPLv3 o posterior
-- `libwim` puede ofrecer una opcion LGPL en algunos casos, pero para `wimlib-imagex.exe` la referencia principal que debes conservar es la documentacion de `wimlib` incluida en `LICENSES/`
-- si distribuyes WimExplorer junto con los binarios de `wimlib`, conviene mantener siempre estos archivos de licencia dentro del repositorio y tambien en cualquier paquete de distribucion
+- `wimlib` as a whole can be redistributed under GPLv3 or later
+- `libwim` may offer an LGPL option in some cases, but for `wimlib-imagex.exe` the main reference you should keep is the `wimlib` documentation included in `LICENSES/`
+- if you distribute WimExplorer along with the `wimlib` binaries, you should always keep these license files in the repository and also in any distribution package
 
-## Estructura del proyecto
+## Project structure
 
 ```text
 WimExplorer/
-|-- WimExplorer-v1.1.exe     # Launcher principal (unica entrada para el usuario)
-|-- README.md
+|-- WimExplorer-v1.2.exe     # Main launcher (only entry point for the user)
+|-- README.md                # English documentation
+|-- README.es.md             # Spanish documentation
 |-- LICENSES/
 |   |-- wimlib-COPYING.txt
 |   |-- wimlib-COPYING.GPLv3.txt
 |   `-- wimlib-COPYING.LGPL.txt
 |-- wimlib/
-|   |-- wimlib-imagex.exe    # Motor de gestion WIM
+|   |-- wimlib-imagex.exe    # WIM management engine
 |   `-- libwim-15.dll
 `-- recursos/
-    |-- server.js            # Backend Express
-    |-- start.vbs            # Fuente del launcher (compilada en el .exe)
-    |-- start.bat            # Inicio alternativo para desarrollo
+    |-- server.js            # Express backend
+    |-- start.vbs            # Launcher source (compiled into the .exe)
+    |-- start.bat            # Alternative start for development
     |-- package.json
-    |-- logo_wme.ico         # Icono del launcher
+    |-- logo_wme.ico         # Launcher icon
     |-- logo_wme.png
-    |-- public/              # Interfaz web
+    |-- public/              # Web interface
     |   |-- index.html
     |   |-- app.js
+    |   |-- i18n.js          # EN/ES internationalization system
     |   `-- styles.css
-    `-- node_modules/        # Instalado automaticamente por el launcher
+    `-- node_modules/        # Automatically installed by the launcher
 ```
 
-## Notas importantes
+## Important notes
 
-- La aplicacion trabaja sobre el formato real usando `wimlib-imagex`; no inventa un formato intermedio.
-- La carpeta puede moverse de lugar. El launcher resuelve todas las rutas en tiempo de ejecucion.
-- El proyecto esta orientado a Windows y a un uso local en `localhost:3000`.
-- Si redistribuyes la aplicacion con `wimlib`, incluye tambien la carpeta `LICENSES/` y conserva la atribucion correspondiente.
+- The application works on the real format using `wimlib-imagex`; it doesn't invent an intermediate format.
+- The folder can be moved anywhere. The launcher resolves all paths at runtime.
+- The project is Windows-oriented and runs locally on `localhost:3000`.
+- If you redistribute the application with `wimlib`, also include the `LICENSES/` folder and keep the corresponding attribution.
 
-## Ideal para
+## Ideal for
 
-- editar imagenes de instalacion de Windows
-- inspeccionar contenido de archivos WIM sin usar consola
-- reemplazar o extraer archivos concretos rapidamente
-- trabajar mas comodo con imagenes multi-indice
+- editing Windows installation images
+- inspecting WIM file contents without using a console
+- quickly replacing or extracting specific files
+- working more comfortably with multi-index images
 
 ---
 
 <p align="center">
-  <strong>WimExplorer v1.1</strong><br>
-  Edicion visual de imagenes WIM con una experiencia mas clara, rapida y amigable.
+  <strong>WimExplorer v1.2</strong><br>
+  Visual WIM image editing with a clearer, faster and friendlier experience.
 </p>
